@@ -1,0 +1,47 @@
+SUBCATEGORY ID,SUBCATEGORY,TYPE,CATEGORY ID
+11,Phone,Fix Cost,1
+12,TV Internet,Fix Cost,1
+13,Water Gas Electricity Sewage,Fix Cost,1
+14,Insurance,Fix Cost,1
+15,Common Costs,Fix Cost,1
+21,Petrol,Variable Cost,2
+22,Insurance,Fix Cost,2
+23,Servicing,Variable Cost,2
+24,Tax and toll,Fix Cost,2
+31,Food and drink,Variable Cost,3
+32,Supplements,Variable Cost,3
+33,Cosmetics,Variable Cost,3
+34,Electronics,Variable Cost,3
+41,Ordering,Variable Cost,4
+42,Restaurant,Variable Cost,4
+43,Pastry shop,Variable Cost,4
+51,Medical examinations,Variable Cost,5
+52,Health benefit,Variable Cost,5
+53,Medicines,Variable Cost,5
+61,Tickets,Variable Cost,6
+62,Parking,Variable Cost,6
+71,Unknown,Variable Cost,7
+72,Gifts,Variable Cost,7
+73,Transfer,Variable Cost,7
+81,Pet,Variable Cost,8
+91,Transfer fee,Variable Cost,9
+92,ATM fee,Variable Cost,9
+93,Card fee,Fix Cost,9
+94,Mortgage interest,Fix Cost,9
+95,Mortgage capital,Fix Cost,9
+96,Cash withdrawal,Variable Cost,9
+101,Salary,Income,10
+103,Interest,Income,10
+104,Transfer,Income,10
+105,Other,Income,10
+111,Renovation,Variable Cost,11
+112,Furniture,Variable Cost,11
+121,Company event,Variable Cost,12
+131,Clothing,Variable Cost,13
+142,Accommodation,Variable Cost,14
+141,Travel related,Variable Cost,14
+151,Cinema,Variable Cost,15
+152,Hobby,Variable Cost,15
+153,Other,Variable Cost,15
+161,Cost of Investment,Investment,16
+162,Income from Investment,Investment,16
