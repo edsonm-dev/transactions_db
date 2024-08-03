@@ -3,14 +3,14 @@
 --AFTER THE INSERT, THE CODE TRIES TO FIND THE SUBCATEGORY ID BASED ON THE EXPRESSION TABLE
 
 CREATE PROCEDURE InsertUpdateTransactions
-(@Owner  nvarchar(50),
-@Date  date,
-@Description   nvarchar(200),
-@Amount decimal(20,2)
+(@Owner  NVARCHAR(50),
+@Date  DATE,
+@Description   NVARCHAR(200),
+@Amount DECIMAL(20,2)
 )
-as
+AS
 
-Begin
+BEGIN
 
 	SET NOCOUNT ON;
 
@@ -23,69 +23,69 @@ Begin
 	SELECT TOP 1 @NewSubID =  e.SubCategoryID
 	FROM Test.dbo.expressions e
 	WHERE @Description LIKE '%'+ e.Expression + '%' 
-	order by len(e.expression) desc
+	ORDER BY len(e.expression) DESC
 
 	UPDATE Test.dbo.transactions 
 	SET SUBCATEGORYID = @NewSubId
 	WHERE TransactionID=SCOPE_IDENTITY();
 
-End;
+END;
 
 --CREATING THE SAME AUTOMATION WITH TRIGGER FOR PRACTICE
 --IF THERE IS A NEW TRANSACTION INSERTED IN THE TRANSACTIONS TABLE, IT TRIES TO FIND THE SUBCATEGORY ID IN THE EXPRESSION TABLE
 
-CREATE TRIGGER SubCategoryUpdate on
-Test.dbo.transactions after insert
+CREATE TRIGGER SubCategoryUpdate ON
+Test.dbo.transactions AFTER INSERT
 
-as
+AS
 
-Begin
+BEGIN
 	
-	declare @NewSubID int;
+	DECLARE @NewSubID INT;
 
-	Select top 1 @NewSubID=e.SubCategoryID
-	from Test.dbo.expressions e
-	inner join inserted i on i.[Description] LIKE '%' + e.Expression + '%'
-	order by len(e.Expression) desc;
+	SELECT TOP 1 @NewSubID=e.SubCategoryID
+	FROM Test.dbo.expressions e
+	INNER JOIN inserted i ON i.[Description] LIKE '%' + e.Expression + '%'
+	ORDER BY len(e.Expression) DESC;
 
-	update Test.dbo.transactions 
-	set SubCategoryID = @NewSubID
-	from Test.dbo.transactions t
-	inner join inserted i on i.TransactionID = t.TransactionID
+	UPDATE Test.dbo.transactions 
+	SET SubCategoryID = @NewSubID
+	FROM Test.dbo.transactions t
+	INNER JOIN inserted i ON i.TransactionID = t.TransactionID
 
-End
+END
 
 --FUNCTION FOR UPDATING ALL ROWS' SUBCATEGORY
 --USED BY THE PROCEDURE BELOW
 --IT CHECKS IF THERE IS AN EXPRESSION IN THE EXPRESSIONS TABLE THAT IS CONTAINED IN THE DESCRIPTION AND RETURNS THE ID
 --IF THERE ARE MULTIPLE MATCHES IT WILL PRIORITIZE THE ONE THAT IS THE LONGEST
 
-create function FindSubCategoryID (@Description nvarchar(200))
-returns int
+CREATE FUNCTION FindSubCategoryID (@Description NVARCHAR(200))
+RETURNS INT
 
-as begin
+AS BEGIN
 
 	DECLARE @NewSubID INT;
 
 	SELECT TOP 1 @NewSubID =  e.SubCategoryID
 	FROM Test.dbo.expressions e
 	WHERE @Description LIKE '%'+ e.Expression + '%' 
-	order by len(e.expression) desc
+	ORDER BY len(e.expression) DESC
 
-	return @NewSubID
+	RETURN @NewSubID
 
-end;
+END;
 
 --PROCEDURE IF WE WANT TO UPDATE ALL SUBCAT IDS
 --THIS USES THE FindSubCategoryID FUNCTION CREATED ABOVE
 
-Create procedure UpdateAllSubCatID
-as
-begin
+CREATE PROCEDURE UpdateAllSubCatID
+AS
+BEGIN
 
 	SET NOCOUNT ON;
 
 	UPDATE Test.dbo.transactions 
 	SET  SUBCATEGORYID = Test.dbo.findsubcategoryID([Description])
 
-end
+END

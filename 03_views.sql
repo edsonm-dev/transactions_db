@@ -2,27 +2,27 @@
 --IN THIS VIEW I CAN CHECK THE TOP 3 COSTS IN EACH MONTH
 
 CREATE VIEW TOP3COSTS_MONTHLY AS
-WITH CostsCTE as(
+WITH CostsCTE AS(
 --THE RETURNS THE CATEGORY SUBCATEGORY NAMES AND MONTHNAME FOR THE TRANSACTIONS
    SELECT 
 		t.OWNER,
 		format(Month([DATE]),'00') + '-' + DATENAME(MONTH,[DATE]) AS MONTHNAME,
-        c.Categoryname as Category,
-		s.SubCategoryName as Subcategory,
-		SUM(t.AMOUNT) as Amount   
+        c.Categoryname AS Category,
+		s.SubCategoryName AS Subcategory,
+		SUM(t.AMOUNT) AS Amount   
     FROM 
         Transactions t
-		left join subcategory s on t.subcategoryID = s.subcategoryid
-		Left join category c on s.CategoryID=c.CategoryID
-	Where Amount < 0
+		LEFT JOIN subcategory s ON t.subcategoryID = s.subcategoryid
+		LEFT JOIN category c ON s.CategoryID=c.CategoryID
+	WHERE Amount < 0
 	GROUP BY t.OWNER,
 		format(Month([DATE]),'00') + '-' + DATENAME(MONTH,[DATE]),
         c.Categoryname,
 		s.SubCategoryName
 ) ,
-rankedCosts as (
+rankedCosts AS (
 --RANKS THE TRANSACTIONS FOR EACH MONTH FROM LOWEST TO HIGHEST
-Select
+SELECT
 	[Owner],
 	Monthname,
 	category,
@@ -34,7 +34,7 @@ Select
 )	
 	
 --SELECTS TOP 3 TRANSACTION FOR EACH MONTH
-Select	[OWNER],MONTHNAME,CATEGORY,SUBCATEGORY, AMOUNT
-from rankedCosts
-where rownumber <=3
-order by [Owner],Monthname,rownumber asc
+SELECT	[OWNER],MONTHNAME,CATEGORY,SUBCATEGORY, AMOUNT
+FROM rankedCosts
+WHERE  rownumber <=3
+ORDER BY [Owner],Monthname,rownumber ASC
